@@ -1,8 +1,8 @@
-# quarantine
+# Quarantine Apps
 
-A new Flutter project.
+Hi ini aplikasi flutter yang aku ikutin di hackaton 2020.
 
-## Getting Started
+## Fitur Aplikasi
 
 This project is a starting point for a Flutter application.
 
