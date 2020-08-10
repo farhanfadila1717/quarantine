@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:quarantine/bloc/blocs.dart';
+import 'package:quarantine/services/services.dart';
 import 'package:quarantine/ui/pages/pages.dart';
 
 void main() {
@@ -13,11 +17,20 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreenPage(),
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+    return StreamProvider.value(
+      value: AuthServices.userStream,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => PageBloc()),
+          BlocProvider(create: (_) => UserBloc()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+          ),
+          home: Wrapper(),
+        ),
       ),
     );
   }
