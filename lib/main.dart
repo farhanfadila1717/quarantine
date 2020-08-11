@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: Wrapper(),
+          home: ChangeNotifierProvider<DrawerOpen>(
+              create: (context) => DrawerOpen(), child: Wrapper()),
         ),
       ),
     );

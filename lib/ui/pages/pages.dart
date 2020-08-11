@@ -17,3 +17,4 @@ part 'home_page.dart';
 part 'report_page.dart';
 part 'emergency_page.dart';
 part 'activity_page.dart';
+part 'drawer_open.dart';
