@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      height: heightSize * 0.3,
+                      height: heightSize * 0.23,
                       width: widthSize,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -53,10 +53,317 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    Consumer<ContentManage>(
+                      builder: (context, contentState, _) => Container(
+                        height: heightSize * 0.06,
+                        width: widthSize,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: widthSize * 0.04,
+                            vertical: heightSize * 0.007),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: double.infinity,
+                              margin: EdgeInsets.only(right: widthSize * 0.07),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      contentState.isContent = false;
+                                    },
+                                    child: Text(
+                                      "Saran",
+                                      style: blackTextFont.copyWith(
+                                          fontSize: heightSize * 0.025,
+                                          fontWeight: FontWeight.w600,
+                                          color: contentState.isContent == false
+                                              ? blackColor
+                                              : greyColor),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    width: widthSize * 0.07,
+                                    height: heightSize * 0.0044,
+                                    decoration: BoxDecoration(
+                                      color: contentState.isContent == false
+                                          ? blackColor
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(3),
+                                        topRight: Radius.circular(3),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: double.infinity,
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      contentState.isContent = true;
+                                    },
+                                    child: Text(
+                                      "Kasus",
+                                      style: blackTextFont.copyWith(
+                                        fontSize: heightSize * 0.025,
+                                        fontWeight: FontWeight.w600,
+                                        color: contentState.isContent != false
+                                            ? blackColor
+                                            : greyColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    width: widthSize * 0.07,
+                                    height: heightSize * 0.0044,
+                                    decoration: BoxDecoration(
+                                      color: contentState.isContent != false
+                                          ? blackColor
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(3),
+                                        topRight: Radius.circular(3),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Consumer<ContentManage>(
+                      builder: (context, contentState, _) => (contentState
+                                  .isContent ==
+                              false)
+                          ? Container(
+                              height: heightSize * 0.14,
+                              width: widthSize,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: dummySaran.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      left: index == 0 ? widthSize * 0.04 : 0,
+                                      right: index == dummySaran.length
+                                          ? 0
+                                          : widthSize * 0.04,
+                                      top: widthSize * 0.02,
+                                      bottom: widthSize * 0.02,
+                                    ),
+                                    child: SaranCard(
+                                      heightSize: heightSize,
+                                      widthSize: widthSize,
+                                      width: widthSize * 0.85,
+                                      content: dummySaran[index].body,
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              height: heightSize * 0.14,
+                              width: widthSize - 2 * (widthSize * 0.03),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: widthSize * 0.02),
+                                child: Container(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(2, 4),
+                                        blurRadius: 4,
+                                        color:
+                                            Color(0xFF808080).withOpacity(0.14),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(widthSize * 0.02),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "109098",
+                                                style: blackNumberFont.copyWith(
+                                                  fontSize: heightSize * 0.025,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: yellowColor,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: heightSize * 0.001,
+                                              ),
+                                              Text(
+                                                "Positif",
+                                                style: blackTextFont.copyWith(
+                                                  fontSize: heightSize * 0.02,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: yellowColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "109098",
+                                                style: blackNumberFont.copyWith(
+                                                  fontSize: heightSize * 0.025,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: greenColor,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: heightSize * 0.001,
+                                              ),
+                                              Text(
+                                                "Pulih",
+                                                style: blackTextFont.copyWith(
+                                                  fontSize: heightSize * 0.02,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: greenColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "109098",
+                                                style: blackNumberFont.copyWith(
+                                                  fontSize: heightSize * 0.025,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: redColor,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: heightSize * 0.001,
+                                              ),
+                                              Text(
+                                                "Wafat",
+                                                style: blackTextFont.copyWith(
+                                                  fontSize: heightSize * 0.02,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: redColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ),
                     Container(
-                      height: heightSize * 0.08,
                       width: widthSize,
-                      color: greenColor,
+                      height: heightSize * 0.35,
+                      padding: EdgeInsets.fromLTRB(
+                        widthSize * 0.04,
+                        widthSize * 0.04,
+                        widthSize * 0.04,
+                        0,
+                      ),
+                      child: Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Diagram Kesehatan",
+                                  style: blackTextFont.copyWith(
+                                    fontSize: heightSize * 0.025,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          "Bahaya",
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Normal",
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Baik",
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Placeholder(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: heightSize * 0.095,
                     ),
                   ],
                 ),
@@ -124,6 +431,7 @@ class HomePage extends StatelessWidget {
                     child: SvgPicture.asset(
                       'assets/icons/ic_notification.svg',
                       fit: BoxFit.fitHeight,
+                      color: blackColor,
                     ),
                   ),
                 ),

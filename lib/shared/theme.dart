@@ -5,6 +5,7 @@ Color greyColor = Color(0xFFBEBEBE);
 Color redColor = Color(0xFFFF4646);
 Color greenColor = Color(0xFF8ED066);
 Color blackColor = Color(0xFF060611);
+Color yellowColor = Color(0xFFFF9F5A);
 
 TextStyle blueTextFont = GoogleFonts.poppins(
   fontSize: 14,

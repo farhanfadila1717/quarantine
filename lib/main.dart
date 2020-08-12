@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:quarantine/bloc/blocs.dart';
+import 'package:quarantine/provider/contect_manage.dart';
 import 'package:quarantine/services/services.dart';
 import 'package:quarantine/ui/pages/pages.dart';
 import 'package:quarantine/provider/providers.dart';
@@ -30,8 +31,10 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: ChangeNotifierProvider<DrawerOpen>(
-              create: (context) => DrawerOpen(), child: Wrapper()),
+          home: MultiProvider(providers: [
+            ChangeNotifierProvider(create: (context) => DrawerOpen()),
+            ChangeNotifierProvider(create: (context) => ContentManage()),
+          ], child: Wrapper()),
         ),
       ),
     );

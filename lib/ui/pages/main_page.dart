@@ -147,7 +147,7 @@ class _MainPageState extends State<MainPage> {
               ),
               BottomNavigationBarItem(
                 title: Text(
-                  "Actifitas",
+                  "Aktifitas",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
