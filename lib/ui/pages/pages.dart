@@ -1,13 +1,17 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quarantine/bloc/blocs.dart';
 import 'package:quarantine/services/services.dart';
 import 'package:quarantine/shared/shared.dart';
+import 'package:quarantine/provider/providers.dart';
 
 part 'splash_page.dart';
 part 'main_page.dart';
@@ -17,4 +21,3 @@ part 'home_page.dart';
 part 'report_page.dart';
 part 'emergency_page.dart';
 part 'activity_page.dart';
-part 'drawer_open.dart';

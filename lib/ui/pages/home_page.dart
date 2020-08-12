@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // NOTE: Custom Drawer
+  // NOTE: Custom Appbar
   Widget createCustomAppBar(double heightSize, double widthSize) => Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -94,6 +94,7 @@ class HomePage extends StatelessWidget {
                             ? SvgPicture.asset(
                                 'assets/icons/ic_drawer.svg',
                                 fit: BoxFit.fitHeight,
+                                color: blackColor,
                               )
                             : SizedBox(),
                       ),
@@ -109,7 +110,10 @@ class HomePage extends StatelessWidget {
                               fontSize: heightSize * 0.02,
                             ),
                           )
-                        : Text("Kota User"),
+                        : SpinKitThreeBounce(
+                            size: heightSize * 0.02,
+                            color: mainColor,
+                          ),
                   ),
                 ),
                 Align(

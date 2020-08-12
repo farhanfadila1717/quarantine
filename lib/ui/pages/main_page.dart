@@ -24,8 +24,8 @@ class _MainPageState extends State<MainPage> {
           AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarColor:
-              drawerOpen.isDrawer == true ? Colors.transparent : mainColor,
-          statusBarIconBrightness: drawerOpen.brightnessStatusBar,
+              drawerOpen.isDrawer == true ? Colors.transparent : Colors.white,
+          statusBarIconBrightness: Brightness.dark,
         ),
         child: Scaffold(
           body: Stack(
@@ -37,6 +37,7 @@ class _MainPageState extends State<MainPage> {
                   axisDirection: AxisDirection.right,
                   child: PageView(
                     controller: pageController,
+                    physics: NeverScrollableScrollPhysics(),
                     onPageChanged: (index) {
                       setState(() {
                         bottomNavbarIndex = index;
@@ -166,6 +167,7 @@ class _MainPageState extends State<MainPage> {
         ),
       );
 
+// NOTE: Custom Drawer
   Widget customDrawer(
     double heightSize,
     double widthSize,
@@ -361,30 +363,42 @@ class _MainPageState extends State<MainPage> {
                                             width: double.infinity,
                                             padding: EdgeInsets.symmetric(
                                                 vertical: heightSize * 0.02),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.power_settings_new,
-                                                  size: heightSize * 0.03,
-                                                  color: redColor,
+                                            child: Consumer<DrawerOpen>(
+                                              builder:
+                                                  (context, drawerOpen, _) =>
+                                                      GestureDetector(
+                                                onTap: () async {
+                                                  drawerOpen.isDrawer = false;
+                                                  await AuthServices.signOut();
+                                                },
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.power_settings_new,
+                                                      size: heightSize * 0.03,
+                                                      color: redColor,
+                                                    ),
+                                                    SizedBox(
+                                                      width: widthSize * 0.02,
+                                                    ),
+                                                    Text(
+                                                      "Sign Out",
+                                                      style: blackTextFont
+                                                          .copyWith(
+                                                        fontSize:
+                                                            heightSize * 0.022,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: redColor,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                SizedBox(
-                                                  width: widthSize * 0.02,
-                                                ),
-                                                Text(
-                                                  "Sign Out",
-                                                  style: blackTextFont.copyWith(
-                                                    fontSize:
-                                                        heightSize * 0.022,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: redColor,
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ],

@@ -1,11 +1,10 @@
 part of 'shared.dart';
 
-double defaultMargin = 20;
-
 Color mainColor = Color(0xFF3386D3);
 Color greyColor = Color(0xFFBEBEBE);
-Color redColor = Color(0xFFFF6161);
+Color redColor = Color(0xFFFF4646);
 Color greenColor = Color(0xFF8ED066);
+Color blackColor = Color(0xFF060611);
 
 TextStyle blueTextFont = GoogleFonts.poppins(
   fontSize: 14,
@@ -22,7 +21,7 @@ TextStyle whiteTextFont = GoogleFonts.poppins(
 TextStyle blackTextFont = GoogleFonts.poppins(
   fontSize: 14,
   fontWeight: FontWeight.w400,
-  color: Colors.black,
+  color: blackColor,
 );
 
 TextStyle greyTextFont = GoogleFonts.poppins(
@@ -46,7 +45,7 @@ TextStyle whiteNumberFont = GoogleFonts.roboto(
 TextStyle blackNumberFont = GoogleFonts.roboto(
   fontSize: 14,
   fontWeight: FontWeight.w400,
-  color: Colors.black,
+  color: blackColor,
 );
 
 TextStyle greyNumberFont = GoogleFonts.roboto(

@@ -1,6 +1,7 @@
-part of 'pages.dart';
-
 // NOTE: State of Drawer Open
+
+import 'package:flutter/material.dart';
+
 class DrawerOpen with ChangeNotifier {
   bool _isDrawer = false;
 
@@ -10,7 +11,4 @@ class DrawerOpen with ChangeNotifier {
     _isDrawer = newValue;
     notifyListeners();
   }
-
-  Brightness get brightnessStatusBar =>
-      (_isDrawer) ? Brightness.dark : Brightness.light;
 }

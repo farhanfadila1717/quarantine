@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quarantine/bloc/blocs.dart';
 import 'package:quarantine/services/services.dart';
 import 'package:quarantine/ui/pages/pages.dart';
+import 'package:quarantine/provider/providers.dart';
 
 void main() {
   WidgetsFlutterBinding();
