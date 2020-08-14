@@ -15,44 +15,72 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      height: heightSize * 0.23,
-                      width: widthSize,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Hari",
-                            style: blackTextFont.copyWith(
-                              fontSize: heightSize * 0.02,
-                            ),
-                          ),
-                          SizedBox(
-                            height: heightSize * 0.007,
-                          ),
-                          Container(
-                            height: heightSize * 0.128,
+                    BlocBuilder<UserBloc, UserState>(
+                      builder: (_, userState) {
+                        if (userState is Userloaded) {
+                          if (imageFileToUpload != null) {
+                            uploadImage(imageFileToUpload).then(
+                              (url) {
+                                imageFileToUpload = null;
+
+                                context.bloc<UserBloc>().add(
+                                      UpdateData(
+                                        profilePicture: url,
+                                      ),
+                                    );
+                              },
+                            );
+                          }
+                          return Container(
+                            height: heightSize * 0.23,
                             width: widthSize,
-                            child: Text(
-                              "1",
-                              style: blackTextFont.copyWith(
-                                fontSize: heightSize * 0.09,
-                              ),
-                              textAlign: TextAlign.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Hari",
+                                  style: blackTextFont.copyWith(
+                                    fontSize: heightSize * 0.02,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightSize * 0.007,
+                                ),
+                                Container(
+                                  height: heightSize * 0.128,
+                                  width: widthSize,
+                                  child: Text(
+                                    "1",
+                                    style: blackTextFont.copyWith(
+                                      fontSize: heightSize * 0.09,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightSize * 0.007,
+                                ),
+                                Text(
+                                  timeNow.dateAndTime,
+                                  style: blackTextFont.copyWith(
+                                    fontSize: heightSize * 0.02,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: heightSize * 0.007,
-                          ),
-                          Text(
-                            timeNow.dateAndTime,
-                            style: blackTextFont.copyWith(
-                              fontSize: heightSize * 0.02,
+                          );
+                        } else {
+                          return Container(
+                            height: heightSize * 0.23,
+                            width: widthSize,
+                            child: SpinKitCubeGrid(
+                              size: widthSize * 0.1,
+                              color: mainColor,
                             ),
-                          ),
-                        ],
-                      ),
+                          );
+                        }
+                      },
                     ),
                     Consumer<ContentManage>(
                       builder: (context, contentState, _) => Container(

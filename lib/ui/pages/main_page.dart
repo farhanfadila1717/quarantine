@@ -208,6 +208,16 @@ class _MainPageState extends State<MainPage> {
                                       decoration: BoxDecoration(
                                         color: greyColor,
                                         shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: userState
+                                                      .user.profilePicture ==
+                                                  null
+                                              ? AssetImage(
+                                                  "assets/img/default_image.png")
+                                              : NetworkImage(userState
+                                                  .user.profilePicture),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(

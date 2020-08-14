@@ -11,27 +11,50 @@ class GetProfilePicturePage extends StatefulWidget {
 
 class _GetProfilePicturePageState extends State<GetProfilePicturePage> {
   bool isDialog;
-
+  bool findLocation;
+  Geolocator geolocator = Geolocator();
+  double _latitude;
+  double _longitude;
+  bool _isGettingLocation;
   @override
   void initState() {
     super.initState();
     isDialog = false;
+    findLocation = false;
+
+    _isGettingLocation = true;
+    getLocation();
+  }
+
+  getLocation() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+
+    try {
+      setState(() {
+        _latitude = position.latitude;
+        _longitude = position.longitude;
+        _isGettingLocation = false;
+      });
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double widthSize = MediaQuery.of(context).size.width;
     double heightSize = MediaQuery.of(context).size.height;
+    DateTime timeNow = DateTime.now();
     return WillPopScope(
       onWillPop: () async {
-        widget.registrationData.password = "";
-
         context.bloc<PageBloc>().add(GoToSignUpPage(widget.registrationData));
         return;
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           statusBarColor: isDialog ? Colors.transparent : Colors.white,
+          statusBarIconBrightness: Brightness.dark,
         ),
         child: Scaffold(
           body: Stack(
@@ -124,9 +147,16 @@ class _GetProfilePicturePageState extends State<GetProfilePicturePage> {
                       width: widthSize * 0.5,
                       child: FlatButton(
                         onPressed: () {
-                          setState(() {
-                            isDialog = true;
-                          });
+                          if (widget.registrationData.isolasiLocation.trim() !=
+                                  null &&
+                              widget.registrationData.time > 0) {
+                            context.bloc<PageBloc>().add(GoToConfrimAccountPage(
+                                widget.registrationData));
+                          } else {
+                            setState(() {
+                              isDialog = true;
+                            });
+                          }
                         },
                         color: widget.registrationData.profilePicture == null
                             ? greenColor
@@ -137,7 +167,9 @@ class _GetProfilePicturePageState extends State<GetProfilePicturePage> {
                         child: Text(
                           widget.registrationData.profilePicture == null
                               ? "Lewati"
-                              : "Selanjutnya",
+                              : widget.registrationData.time != null
+                                  ? "Selanjutnya"
+                                  : "Lengkapi",
                           style: whiteTextFont.copyWith(
                             fontSize: heightSize * 0.02,
                             fontWeight: FontWeight.w500,
@@ -171,7 +203,7 @@ class _GetProfilePicturePageState extends State<GetProfilePicturePage> {
                           Align(
                             alignment: Alignment.center,
                             child: Container(
-                              height: heightSize * 0.5,
+                              height: heightSize * 0.27,
                               width: widthSize * 0.7,
                               padding: EdgeInsets.all(widthSize * 0.03),
                               decoration: BoxDecoration(
@@ -181,67 +213,132 @@ class _GetProfilePicturePageState extends State<GetProfilePicturePage> {
                               child: Column(
                                 children: [
                                   Expanded(
-                                    flex: 1,
+                                    flex: 2,
                                     child: Center(
-                                      child: Text("Isolasi Sekarang ?"),
+                                      child: !_isGettingLocation
+                                          ? Text(
+                                              findLocation
+                                                  ? "Ini merupakan tempat isolasi anda?"
+                                                  : "Isolasi mandiri sekarang ?",
+                                              style: blackTextFont.copyWith(
+                                                fontSize: heightSize * 0.023,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : SpinKitChasingDots(
+                                              size: 50,
+                                              color: mainColor,
+                                            ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Placeholder(),
                                   ),
                                   SizedBox(
                                     height: widthSize * 0.03,
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            height: double.infinity,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: mainColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Ya",
-                                                style: whiteTextFont.copyWith(
-                                                  fontSize: heightSize * 0.02,
-                                                  fontWeight: FontWeight.w500,
+                                    child: !findLocation
+                                        ? Row(
+                                            children: [
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      widget.registrationData
+                                                              .time =
+                                                          timeNow
+                                                              .millisecondsSinceEpoch;
+                                                      findLocation = true;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    height: double.infinity,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: mainColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Ya",
+                                                        style: whiteTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: widthSize * 0.03,
+                                              ),
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isDialog = false;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    height: double.infinity,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: greyColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Tidak",
+                                                        style: whiteTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                isDialog = false;
+                                                widget.registrationData
+                                                        .isolasiLocation =
+                                                    "${_longitude.toString()}, ${_latitude.toString()}";
+                                              });
+                                            },
+                                            child: Container(
+                                              height: double.infinity,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: mainColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Ya",
+                                                  style: whiteTextFont.copyWith(
+                                                    fontSize: heightSize * 0.02,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: widthSize * 0.03,
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            height: double.infinity,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: redColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Tidak",
-                                                style: whiteTextFont.copyWith(
-                                                  fontSize: heightSize * 0.02,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
                                 ],
                               ),
