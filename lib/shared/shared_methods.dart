@@ -1,10 +1,10 @@
 part of 'shared.dart';
 
 Future<File> getImage() async {
-  File imgFile;
   var image = await ImagePicker().getImage(source: ImageSource.gallery);
+  File imgFile = File(image.path);
 
-  return imgFile = File(image.path);
+  return imgFile;
 }
 
 Future<String> uploadImage(File image) async {

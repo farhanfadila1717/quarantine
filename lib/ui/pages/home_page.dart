@@ -1,6 +1,11 @@
 part of 'pages.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double widthSize = MediaQuery.of(context).size.width;
@@ -18,6 +23,12 @@ class HomePage extends StatelessWidget {
                     BlocBuilder<UserBloc, UserState>(
                       builder: (_, userState) {
                         if (userState is Userloaded) {
+                          DateTime startTime =
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  userState.user.time);
+
+                          final differenceInDays =
+                              timeNow.difference(startTime).inDays;
                           if (imageFileToUpload != null) {
                             uploadImage(imageFileToUpload).then(
                               (url) {
@@ -51,7 +62,9 @@ class HomePage extends StatelessWidget {
                                   height: heightSize * 0.128,
                                   width: widthSize,
                                   child: Text(
-                                    "1",
+                                    differenceInDays == 0
+                                        ? (differenceInDays + 1).toString()
+                                        : differenceInDays.toString(),
                                     style: blackTextFont.copyWith(
                                       fontSize: heightSize * 0.09,
                                     ),
@@ -382,7 +395,60 @@ class HomePage extends StatelessWidget {
                                   ),
                                   Expanded(
                                     flex: 4,
-                                    child: Placeholder(),
+                                    child: BezierChart(
+                                      bezierChartScale: BezierChartScale.CUSTOM,
+                                      xAxisCustomValues: [
+                                        0,
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7
+                                      ],
+                                      config: BezierChartConfig(
+                                        xLinesColor: mainColor,
+                                        verticalIndicatorStrokeWidth: 3.0,
+                                        verticalIndicatorColor: greyColor,
+                                        showVerticalIndicator: true,
+                                        snap: true,
+                                        bubbleIndicatorColor: mainColor,
+                                        footerHeight: 40,
+                                        bubbleIndicatorValueStyle: TextStyle(
+                                            fontSize: 48, color: Colors.black),
+                                        bubbleIndicatorLabelStyle: TextStyle(
+                                            fontSize: 48, color: Colors.white),
+                                        bubbleIndicatorTitleStyle:
+                                            TextStyle(fontSize: 48),
+                                        xAxisTextStyle:
+                                            TextStyle(color: Colors.black),
+                                      ),
+                                      series: [
+                                        BezierLine(
+                                          lineColor: mainColor,
+                                          dataPointStrokeColor: mainColor,
+                                          data: [
+                                            DataPoint<double>(
+                                                value: 0, xAxis: 0),
+                                            DataPoint<double>(
+                                                value: 130, xAxis: 5),
+                                            DataPoint<double>(
+                                                value: 50, xAxis: 10),
+                                            DataPoint<double>(
+                                                value: 300, xAxis: 15),
+                                            DataPoint<double>(
+                                                value: 75, xAxis: 20),
+                                            DataPoint<double>(
+                                                value: 0, xAxis: 25),
+                                            DataPoint<double>(
+                                                value: 5, xAxis: 30),
+                                            DataPoint<double>(
+                                                value: 45, xAxis: 35),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -392,7 +458,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: heightSize * 0.095,
+                      height: heightSize * 0.1,
                     ),
                   ],
                 ),
@@ -405,7 +471,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // NOTE: Custom Appbar
   Widget createCustomAppBar(double heightSize, double widthSize) => Align(
         alignment: Alignment.topCenter,
         child: Container(
