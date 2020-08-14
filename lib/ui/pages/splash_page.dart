@@ -52,7 +52,9 @@ class SplashPage extends StatelessWidget {
                     child: FlatButton(
                       color: mainColor,
                       onPressed: () {
-                        print((widthSize * 01).toString());
+                        context
+                            .bloc<PageBloc>()
+                            .add(GoToSignUpPage(RegistrationData()));
                       },
                       child: Text(
                         "Daftar Sekarang",

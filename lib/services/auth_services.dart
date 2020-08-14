@@ -4,17 +4,22 @@ class AuthServices {
   static FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future<SignInSignUpResult> signUpWithEmail(
-      String email,
-      String password,
-      String name,
-      String isolasiLocation,
-      String cityLive) async {
+    String email,
+    String password,
+    String name,
+    String isolasiLocation,
+    String cityLive,
+    int time,
+  ) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       User user = result.user.convertToUser(
-          name: name, cityLive: cityLive, isolasiLocation: isolasiLocation);
+          time: time,
+          name: name,
+          cityLive: cityLive,
+          isolasiLocation: isolasiLocation);
 
       await UserServices.updateUser(user);
 

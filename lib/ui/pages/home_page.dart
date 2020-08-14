@@ -5,6 +5,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthSize = MediaQuery.of(context).size.width;
     double heightSize = MediaQuery.of(context).size.height;
+    DateTime timeNow = DateTime.now();
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -45,7 +46,7 @@ class HomePage extends StatelessWidget {
                             height: heightSize * 0.007,
                           ),
                           Text(
-                            "20 Agustus 2020",
+                            timeNow.dateAndTime,
                             style: blackTextFont.copyWith(
                               fontSize: heightSize * 0.02,
                             ),
@@ -412,7 +413,7 @@ class HomePage extends StatelessWidget {
                   child: BlocBuilder<UserBloc, UserState>(
                     builder: (_, userState) => (userState is Userloaded)
                         ? Text(
-                            userState.user.cityLive + ", Indonesia",
+                            userState.user.cityLive.capital() + ", Indonesia",
                             style: blackTextFont.copyWith(
                               fontSize: heightSize * 0.02,
                             ),

@@ -6,9 +6,14 @@ class User extends Equatable {
   final String name;
   final String cityLive;
   final String isolasiLocation;
+  final int time;
   final String profilePicture;
   User(this.id, this.email,
-      {this.cityLive, this.isolasiLocation, this.name, this.profilePicture});
+      {this.cityLive,
+      this.isolasiLocation,
+      this.name,
+      this.profilePicture,
+      this.time});
 
   @override
   String toString() {
@@ -17,5 +22,5 @@ class User extends Equatable {
 
   @override
   List<Object> get props =>
-      [id, email, name, cityLive, isolasiLocation, profilePicture];
+      [id, email, name, cityLive, isolasiLocation, time, profilePicture];
 }
