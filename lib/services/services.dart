@@ -5,3 +5,4 @@ import 'package:quarantine/extensions/extensions.dart';
 
 part 'auth_services.dart';
 part 'user_services.dart';
+part 'report_services.dart';

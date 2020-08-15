@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quarantine/bloc/blocs.dart';
 import 'package:quarantine/provider/contect_manage.dart';
 import 'package:quarantine/services/services.dart';
+import 'package:quarantine/shared/shared.dart';
 import 'package:quarantine/ui/pages/pages.dart';
 import 'package:quarantine/provider/providers.dart';
 
@@ -25,11 +26,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => PageBloc()),
           BlocProvider(create: (_) => UserBloc()),
+          BlocProvider(create: (_) => ReportBloc()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
+            primaryColor: mainColor,
           ),
           home: MultiProvider(providers: [
             ChangeNotifierProvider(create: (context) => DrawerOpen()),

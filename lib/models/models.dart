@@ -6,3 +6,4 @@ part 'user.dart';
 part 'content_saran.dart';
 part 'registration_data.dart';
 part 'avaible_city.dart';
+part 'report.dart';
