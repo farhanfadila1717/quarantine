@@ -34,8 +34,8 @@ class ReportServices {
           document.data['distanceLocation'],
           document.data['batuk'],
           document.data['sesakNapas'],
-          document.data['tidur'],
           document.data['suhu'],
+          document.data['tidur'],
           document.data['valueGejala'],
           document.data['note'],
           document.data['time'],
@@ -44,5 +44,24 @@ class ReportServices {
     }
 
     return reports;
+  }
+
+  static Future<List<BezierModelChart>> dataBezierChart(String userID) async {
+    QuerySnapshot snapshot = await reportCollection.getDocuments();
+
+    var documents = snapshot.documents
+        .where((document) => document.data['userID'] == userID);
+
+    List<BezierModelChart> dataBezierCharts = [];
+
+    for (var document in documents) {
+      dataBezierCharts.add(
+        BezierModelChart(
+          document.data['valueGejala'],
+        ),
+      );
+    }
+
+    return dataBezierCharts;
   }
 }

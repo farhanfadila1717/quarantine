@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => PageBloc()),
           BlocProvider(create: (_) => UserBloc()),
           BlocProvider(create: (_) => ReportBloc()),
+          BlocProvider(create: (_) => ChartBloc()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

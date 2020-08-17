@@ -52,6 +52,58 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
+              BlocBuilder<UserBloc, UserState>(builder: (_, userState) {
+                if (userState is Userloaded) {
+                  DateTime timeNow = DateTime.now();
+                  DateTime startTime =
+                      DateTime.fromMillisecondsSinceEpoch(userState.user.time);
+
+                  final differenceInDays = timeNow.difference(startTime).inDays;
+                  return BlocBuilder<ChartBloc, ChartState>(
+                    builder: (_, chartState) => (differenceInDays >=
+                                chartState.bezierCharts.length &&
+                            bottomNavbarIndex == 1)
+                        ? Positioned(
+                            right: widthSize * 0.04,
+                            bottom: heightSize * 0.12,
+                            child: FloatingActionButton(
+                              onPressed: () async {
+                                await ReportServices.saveReport(
+                                  userState.user.id,
+                                  Report(
+                                      userState.user.name,
+                                      2,
+                                      3,
+                                      1,
+                                      36.8,
+                                      8,
+                                      80,
+                                      "Batuk Berdahak",
+                                      DateTime.now().millisecondsSinceEpoch),
+                                );
+                                setState(() {});
+                              },
+                              elevation: 0,
+                              highlightElevation: 0,
+                              backgroundColor: mainColor,
+                              child: Center(
+                                child: Container(
+                                  height: heightSize * 0.0375,
+                                  width: heightSize * 0.0375,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/ic_edit_rounded.svg',
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }),
               createBottomNavigationBar(heightSize, widthSize),
               (drawerOpen.isDrawer == true)
                   ? customDrawer(heightSize, widthSize)
@@ -104,7 +156,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 icon: Container(
-                  height: 24,
+                  height: heightSize * 0.0375,
                   margin: EdgeInsets.only(bottom: 2),
                   child: SvgPicture.asset((bottomNavbarIndex == 0)
                       ? "assets/icons/ic_home_selected.svg"
@@ -121,7 +173,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 icon: Container(
-                  height: 24,
+                  height: heightSize * 0.0375,
                   margin: EdgeInsets.only(bottom: 2),
                   child: SvgPicture.asset((bottomNavbarIndex == 1)
                       ? "assets/icons/ic_report_selected.svg"
@@ -138,7 +190,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 icon: Container(
-                  height: 24,
+                  height: heightSize * 0.0375,
                   margin: EdgeInsets.only(bottom: 2),
                   child: SvgPicture.asset((bottomNavbarIndex == 2)
                       ? "assets/icons/ic_emergency_selected.svg"
@@ -155,7 +207,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 icon: Container(
-                  height: 24,
+                  height: heightSize * 0.0375,
                   margin: EdgeInsets.only(bottom: 2),
                   child: SvgPicture.asset((bottomNavbarIndex == 3)
                       ? "assets/icons/ic_activity_selected.svg"
@@ -172,275 +224,290 @@ class _MainPageState extends State<MainPage> {
     double heightSize,
     double widthSize,
   ) =>
-      Container(
-        height: heightSize,
-        width: widthSize,
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.5),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              left: widthSize * 0.05,
-              top: heightSize * 0.04,
-              child: Container(
-                height: heightSize * 0.608,
-                width: widthSize * 0.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(widthSize * 0.035),
-                  color: Colors.white,
-                ),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(widthSize * 0.04),
-                      child: Container(
-                        child: BlocBuilder<UserBloc, UserState>(
-                          builder: (_, userState) => (userState is Userloaded)
-                              ? Column(
-                                  children: [
-                                    SizedBox(
-                                      height: heightSize * 0.02,
-                                    ),
-                                    Container(
-                                      height: heightSize * 0.08,
-                                      width: heightSize * 0.08,
-                                      decoration: BoxDecoration(
-                                        color: greyColor,
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: userState
-                                                      .user.profilePicture ==
-                                                  null
-                                              ? AssetImage(
-                                                  "assets/img/default_image.png")
-                                              : NetworkImage(userState
-                                                  .user.profilePicture),
-                                          fit: BoxFit.cover,
+      BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
+        child: Container(
+          height: heightSize,
+          width: widthSize,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                left: widthSize * 0.05,
+                top: heightSize * 0.04,
+                child: Container(
+                  height: heightSize * 0.608,
+                  width: widthSize * 0.7,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(widthSize * 0.035),
+                    color: Colors.white,
+                  ),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(widthSize * 0.04),
+                        child: Container(
+                          child: BlocBuilder<UserBloc, UserState>(
+                            builder: (_, userState) => (userState is Userloaded)
+                                ? Column(
+                                    children: [
+                                      SizedBox(
+                                        height: heightSize * 0.02,
+                                      ),
+                                      Container(
+                                        height: heightSize * 0.08,
+                                        width: heightSize * 0.08,
+                                        decoration: BoxDecoration(
+                                          color: greyColor,
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: userState
+                                                        .user.profilePicture ==
+                                                    null
+                                                ? AssetImage(
+                                                    "assets/img/default_image.png")
+                                                : NetworkImage(userState
+                                                    .user.profilePicture),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: heightSize * 0.02,
-                                    ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Text(
-                                        userState.user.name,
-                                        style: blackTextFont.copyWith(
-                                          fontSize: heightSize * 0.024,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.fade,
-                                        textAlign: TextAlign.center,
+                                      SizedBox(
+                                        height: heightSize * 0.02,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: heightSize * 0.007,
-                                    ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Text(
-                                        "Kota ${userState.user.cityLive}",
-                                        style: greyTextFont.copyWith(
-                                          fontSize: heightSize * 0.018,
-                                          fontWeight: FontWeight.w500,
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          userState.user.name,
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.024,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.center,
                                         ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.fade,
-                                        textAlign: TextAlign.center,
                                       ),
-                                    ),
-                                    Spacer(),
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: heightSize * 0.07,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: heightSize * 0.02),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Akun",
-                                                  style: blackTextFont.copyWith(
-                                                    fontSize:
-                                                        heightSize * 0.022,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: heightSize * 0.027,
-                                                  color: greyColor,
-                                                ),
-                                              ],
-                                            ),
+                                      SizedBox(
+                                        height: heightSize * 0.007,
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          "Kota ${userState.user.cityLive.capital()}",
+                                          style: greyTextFont.copyWith(
+                                            fontSize: heightSize * 0.018,
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          Container(
-                                            height: heightSize * 0.07,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: heightSize * 0.02),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Password",
-                                                  style: blackTextFont.copyWith(
-                                                    fontSize:
-                                                        heightSize * 0.022,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: heightSize * 0.027,
-                                                  color: greyColor,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            height: heightSize * 0.07,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: heightSize * 0.02),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Settings",
-                                                  style: blackTextFont.copyWith(
-                                                    fontSize:
-                                                        heightSize * 0.022,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: heightSize * 0.027,
-                                                  color: greyColor,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            height: heightSize * 0.07,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: heightSize * 0.02),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Bantuan",
-                                                  style: blackTextFont.copyWith(
-                                                    fontSize:
-                                                        heightSize * 0.022,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: heightSize * 0.027,
-                                                  color: greyColor,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            height: heightSize * 0.07,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: heightSize * 0.02),
-                                            child: Consumer<DrawerOpen>(
-                                              builder:
-                                                  (context, drawerOpen, _) =>
-                                                      GestureDetector(
-                                                onTap: () async {
-                                                  drawerOpen.isDrawer = false;
-                                                  await AuthServices.signOut();
-                                                },
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.power_settings_new,
-                                                      size: heightSize * 0.03,
-                                                      color: redColor,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: heightSize * 0.07,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: heightSize * 0.02),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Akun",
+                                                    style:
+                                                        blackTextFont.copyWith(
+                                                      fontSize:
+                                                          heightSize * 0.022,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                    SizedBox(
-                                                      width: widthSize * 0.02,
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    size: heightSize * 0.027,
+                                                    color: greyColor,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: heightSize * 0.07,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: heightSize * 0.02),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Password",
+                                                    style:
+                                                        blackTextFont.copyWith(
+                                                      fontSize:
+                                                          heightSize * 0.022,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                    Text(
-                                                      "Sign Out",
-                                                      style: blackTextFont
-                                                          .copyWith(
-                                                        fontSize:
-                                                            heightSize * 0.022,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    size: heightSize * 0.027,
+                                                    color: greyColor,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: heightSize * 0.07,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: heightSize * 0.02),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Settings",
+                                                    style:
+                                                        blackTextFont.copyWith(
+                                                      fontSize:
+                                                          heightSize * 0.022,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    size: heightSize * 0.027,
+                                                    color: greyColor,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: heightSize * 0.07,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: heightSize * 0.02),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Bantuan",
+                                                    style:
+                                                        blackTextFont.copyWith(
+                                                      fontSize:
+                                                          heightSize * 0.022,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    size: heightSize * 0.027,
+                                                    color: greyColor,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: heightSize * 0.07,
+                                              width: double.infinity,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: heightSize * 0.02),
+                                              child: Consumer<DrawerOpen>(
+                                                builder:
+                                                    (context, drawerOpen, _) =>
+                                                        GestureDetector(
+                                                  onTap: () async {
+                                                    drawerOpen.isDrawer = false;
+                                                    await AuthServices
+                                                        .signOut();
+                                                  },
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .power_settings_new,
+                                                        size: heightSize * 0.03,
                                                         color: redColor,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      SizedBox(
+                                                        width: widthSize * 0.02,
+                                                      ),
+                                                      Text(
+                                                        "Sign Out",
+                                                        style: blackTextFont
+                                                            .copyWith(
+                                                          fontSize: heightSize *
+                                                              0.022,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: redColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )
-                              : SizedBox(),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: heightSize * 0.01,
-                      right: widthSize * 0.02,
-                      child: Consumer<DrawerOpen>(
-                        builder: (context, drawerOpen, _) => GestureDetector(
-                          onTap: () {
-                            drawerOpen.isDrawer = !drawerOpen.isDrawer;
-                          },
-                          child: Icon(
-                            Icons.close,
-                            size: widthSize * 0.075,
-                            color: redColor,
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : SizedBox(),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        top: heightSize * 0.01,
+                        right: widthSize * 0.02,
+                        child: Consumer<DrawerOpen>(
+                          builder: (context, drawerOpen, _) => GestureDetector(
+                            onTap: () {
+                              drawerOpen.isDrawer = !drawerOpen.isDrawer;
+                            },
+                            child: Icon(
+                              Icons.close,
+                              size: widthSize * 0.075,
+                              color: redColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 }

@@ -62,9 +62,7 @@ class _HomePageState extends State<HomePage> {
                                   height: heightSize * 0.128,
                                   width: widthSize,
                                   child: Text(
-                                    differenceInDays == 0
-                                        ? (differenceInDays + 1).toString()
-                                        : differenceInDays.toString(),
+                                    differenceInDays.toString(),
                                     style: blackTextFont.copyWith(
                                       fontSize: heightSize * 0.09,
                                     ),
@@ -87,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             height: heightSize * 0.23,
                             width: widthSize,
-                            child: SpinKitCubeGrid(
+                            child: SpinKitWave(
                               size: widthSize * 0.1,
                               color: mainColor,
                             ),
@@ -332,206 +330,37 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                     ),
-                    Container(
-                      width: widthSize,
-                      height: heightSize * 0.35,
-                      padding: EdgeInsets.fromLTRB(
-                        widthSize * 0.04,
-                        widthSize * 0.04,
-                        widthSize * 0.04,
-                        0,
-                      ),
-                      child: Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Diagram Kesehatan",
-                                  style: blackTextFont.copyWith(
-                                    fontSize: heightSize * 0.025,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                    BlocBuilder<ChartBloc, ChartState>(
+                      builder: (_, chartState) => (chartState
+                              .bezierCharts.isNotEmpty)
+                          ? ChartViewer(
+                              heightSize, widthSize, chartState.bezierCharts)
+                          : Container(
+                              width: widthSize,
+                              height: heightSize * 0.35,
+                              child: Center(
+                                child: SpinKitRotatingPlain(
+                                  size: widthSize * 0.15,
+                                  color: mainColor,
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 4,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          "Bahaya",
-                                          style: blackTextFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Normal",
-                                          style: blackTextFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Baik",
-                                          style: blackTextFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: BezierChart(
-                                      bezierChartScale: BezierChartScale.CUSTOM,
-                                      xAxisCustomValues: [
-                                        0,
-                                        1,
-                                        2,
-                                        3,
-                                        4,
-                                        5,
-                                        6,
-                                        7
-                                      ],
-                                      config: BezierChartConfig(
-                                        xLinesColor: mainColor,
-                                        verticalIndicatorStrokeWidth: 3.0,
-                                        verticalIndicatorColor: greyColor,
-                                        showVerticalIndicator: true,
-                                        snap: true,
-                                        bubbleIndicatorColor: mainColor,
-                                        footerHeight: 40,
-                                        bubbleIndicatorValueStyle: TextStyle(
-                                            fontSize: 48, color: Colors.black),
-                                        bubbleIndicatorLabelStyle: TextStyle(
-                                            fontSize: 48, color: Colors.white),
-                                        bubbleIndicatorTitleStyle:
-                                            TextStyle(fontSize: 48),
-                                        xAxisTextStyle:
-                                            TextStyle(color: Colors.black),
-                                      ),
-                                      series: [
-                                        BezierLine(
-                                          lineColor: mainColor,
-                                          dataPointStrokeColor: mainColor,
-                                          data: [
-                                            DataPoint<double>(
-                                                value: 0, xAxis: 0),
-                                            DataPoint<double>(
-                                                value: 130, xAxis: 5),
-                                            DataPoint<double>(
-                                                value: 50, xAxis: 10),
-                                            DataPoint<double>(
-                                                value: 300, xAxis: 15),
-                                            DataPoint<double>(
-                                                value: 75, xAxis: 20),
-                                            DataPoint<double>(
-                                                value: 0, xAxis: 25),
-                                            DataPoint<double>(
-                                                value: 5, xAxis: 30),
-                                            DataPoint<double>(
-                                                value: 45, xAxis: 35),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                     SizedBox(
-                      height: heightSize * 0.1,
+                      height: heightSize * 0.8,
                     ),
                   ],
                 ),
               ),
             ),
-            createCustomAppBar(heightSize, widthSize),
+            CustomAppBar(
+              isHome: true,
+              heightSize: heightSize,
+              widthSize: widthSize,
+            ),
           ],
         ),
       ),
     );
   }
-
-  Widget createCustomAppBar(double heightSize, double widthSize) => Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          height: heightSize * 0.09,
-          width: widthSize,
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: widthSize * 0.03),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Consumer<DrawerOpen>(
-                    builder: (context, drawerOpen, _) => GestureDetector(
-                      onTap: () {
-                        drawerOpen.isDrawer = true;
-                      },
-                      child: Container(
-                        height: heightSize * 0.04,
-                        width: heightSize * 0.04,
-                        child: drawerOpen.isDrawer != true
-                            ? SvgPicture.asset(
-                                'assets/icons/ic_drawer.svg',
-                                fit: BoxFit.fitHeight,
-                                color: blackColor,
-                              )
-                            : SizedBox(),
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: BlocBuilder<UserBloc, UserState>(
-                    builder: (_, userState) => (userState is Userloaded)
-                        ? Text(
-                            userState.user.cityLive.capital() + ", Indonesia",
-                            style: blackTextFont.copyWith(
-                              fontSize: heightSize * 0.02,
-                            ),
-                          )
-                        : SpinKitThreeBounce(
-                            size: heightSize * 0.02,
-                            color: mainColor,
-                          ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    height: heightSize * 0.04,
-                    width: heightSize * 0.04,
-                    child: SvgPicture.asset(
-                      'assets/icons/ic_notification.svg',
-                      fit: BoxFit.fitHeight,
-                      color: blackColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 }
