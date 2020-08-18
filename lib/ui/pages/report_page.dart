@@ -40,6 +40,95 @@ class _ReportPageState extends State<ReportPage> {
         child: Stack(
           children: [
             Positioned(
+              top: heightSize * 0.38,
+              left: widthSize * 0.04,
+              child: Container(
+                width: widthSize - (2 * (widthSize * 0.04)),
+                height: heightSize * 0.49,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        "Semua Hari",
+                        style: blackTextFont.copyWith(
+                          fontSize: heightSize * 0.025,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              height: heightSize * 0.1,
+                              width: double.infinity,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: heightSize * 0.1,
+                                    width: heightSize * 0.1,
+                                    padding: EdgeInsets.all(heightSize * 0.02),
+                                    decoration: BoxDecoration(
+                                      color: mainColor.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Container(
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: mainColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "0",
+                                          style: whiteNumberFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: widthSize * 0.04,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Hari 0",
+                                        style: blackTextFont.copyWith(
+                                          fontSize: heightSize * 0.022,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Hari 0",
+                                        style: greyNumberFont.copyWith(
+                                          fontSize: heightSize * 0.02,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
               top: widthSize * 0.04,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: widthSize * 0.04),
@@ -129,7 +218,7 @@ class _ReportPageState extends State<ReportPage> {
                                                   width: widthSize * 0.1,
                                                   child: Center(
                                                     child: Icon(
-                                                      Icons.ac_unit,
+                                                      Icons.grain,
                                                       size: widthSize * 0.08,
                                                       color: Colors.white,
                                                     ),
@@ -189,7 +278,8 @@ class _ReportPageState extends State<ReportPage> {
                                                   width: widthSize * 0.1,
                                                   child: Center(
                                                     child: Icon(
-                                                      Icons.ac_unit,
+                                                      Icons
+                                                          .airline_seat_flat_angled,
                                                       size: widthSize * 0.08,
                                                       color: Colors.white,
                                                     ),
@@ -255,7 +345,7 @@ class _ReportPageState extends State<ReportPage> {
                                                   width: widthSize * 0.1,
                                                   child: Center(
                                                     child: Icon(
-                                                      Icons.ac_unit,
+                                                      Icons.gesture,
                                                       size: widthSize * 0.08,
                                                       color: Colors.white,
                                                     ),

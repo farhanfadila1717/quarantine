@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
           home: MultiProvider(providers: [
             ChangeNotifierProvider(create: (context) => DrawerOpen()),
             ChangeNotifierProvider(create: (context) => ContentManage()),
+            ChangeNotifierProvider(create: (context) => GetPositionUser()),
           ], child: Wrapper()),
         ),
       ),
