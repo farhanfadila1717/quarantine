@@ -19,96 +19,93 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     double widthSize = MediaQuery.of(context).size.width;
     double heightSize = MediaQuery.of(context).size.height;
-    return Consumer<DrawerOpen>(
-      builder: (context, drawerOpen, _) =>
-          AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor:
-              drawerOpen.isDrawer == true ? Colors.transparent : Colors.white,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: Scaffold(
-          body: Stack(
-            children: [
-              ScrollConfiguration(
-                behavior: ScrollBehavior(),
-                child: GlowingOverscrollIndicator(
-                  color: mainColor,
-                  axisDirection: AxisDirection.right,
-                  child: PageView(
-                    controller: pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (index) {
-                      setState(() {
-                        bottomNavbarIndex = index;
-                      });
-                    },
-                    children: [
-                      HomePage(),
-                      ReportPage(),
-                      EmergencyPage(),
-                      ActivityPage(),
-                    ],
+    return Consumer<ReportDay>(
+      builder: (context, reportDay, _) => Consumer<DrawerOpen>(
+        builder: (context, drawerOpen, _) =>
+            AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor:
+                drawerOpen.isDrawer == true || reportDay.isReport == true
+                    ? Colors.transparent
+                    : Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          child: Scaffold(
+            body: Stack(
+              children: [
+                ScrollConfiguration(
+                  behavior: ScrollBehavior(),
+                  child: GlowingOverscrollIndicator(
+                    color: mainColor,
+                    axisDirection: AxisDirection.right,
+                    child: PageView(
+                      controller: pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (index) {
+                        setState(() {
+                          bottomNavbarIndex = index;
+                        });
+                      },
+                      children: [
+                        HomePage(),
+                        ReportPage(),
+                        EmergencyPage(),
+                        ActivityPage(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              BlocBuilder<UserBloc, UserState>(builder: (_, userState) {
-                if (userState is Userloaded) {
-                  DateTime timeNow = DateTime.now();
-                  DateTime startTime =
-                      DateTime.fromMillisecondsSinceEpoch(userState.user.time);
+                BlocBuilder<UserBloc, UserState>(builder: (_, userState) {
+                  if (userState is Userloaded) {
+                    DateTime timeNow = DateTime.now();
+                    DateTime startTime = DateTime.fromMillisecondsSinceEpoch(
+                        userState.user.time);
 
-                  final differenceInDays = timeNow.difference(startTime).inDays;
-                  return BlocBuilder<ChartBloc, ChartState>(
-                    builder: (_, chartState) => (differenceInDays >=
-                                chartState.bezierCharts.length &&
-                            bottomNavbarIndex == 1)
-                        ? Positioned(
-                            right: widthSize * 0.04,
-                            bottom: heightSize * 0.12,
-                            child: FloatingActionButton(
-                              onPressed: () async {
-                                await ReportServices.saveReport(
-                                  userState.user.id,
-                                  Report(
-                                      userState.user.name,
-                                      2,
-                                      3,
-                                      1,
-                                      36.8,
-                                      8,
-                                      80,
-                                      "Batuk Berdahak",
-                                      DateTime.now().millisecondsSinceEpoch),
-                                );
-                                setState(() {});
-                              },
-                              elevation: 0,
-                              highlightElevation: 0,
-                              backgroundColor: mainColor,
-                              child: Center(
-                                child: Container(
-                                  height: heightSize * 0.0375,
-                                  width: heightSize * 0.0375,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/ic_edit_rounded.svg',
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ),
+                    final differenceInDays =
+                        timeNow.difference(startTime).inDays;
+                    return BlocBuilder<ChartBloc, ChartState>(
+                      builder: (_, chartState) =>
+                          // (differenceInDays >= chartState.bezierCharts.length &&
+                          //         bottomNavbarIndex == 1)
+                          //     ?
+                          Positioned(
+                        right: widthSize * 0.04,
+                        bottom: heightSize * 0.12,
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            reportDay.isReport = true;
+                          },
+                          elevation: 0,
+                          highlightElevation: 0,
+                          backgroundColor: mainColor,
+                          child: Center(
+                            child: Container(
+                              height: heightSize * 0.0375,
+                              width: heightSize * 0.0375,
+                              child: SvgPicture.asset(
+                                'assets/icons/ic_edit_rounded.svg',
+                                fit: BoxFit.fitHeight,
                               ),
                             ),
-                          )
-                        : SizedBox(),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
-              createBottomNavigationBar(heightSize, widthSize),
-              (drawerOpen.isDrawer == true)
-                  ? customDrawer(heightSize, widthSize)
-                  : SizedBox(),
-            ],
+                          ),
+                        ),
+                      )
+                      // : SizedBox()
+                      ,
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                }),
+                createBottomNavigationBar(heightSize, widthSize),
+                (drawerOpen.isDrawer == true)
+                    ? customDrawer(heightSize, widthSize)
+                    : SizedBox(),
+                (reportDay.isReport == true)
+                    ? reportDayForm(heightSize, widthSize)
+                    : SizedBox(),
+              ],
+            ),
           ),
         ),
       ),
@@ -507,6 +504,72 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ],
+          ),
+        ),
+      );
+
+// NOTE: reportDayForm()
+  Widget reportDayForm(double heightSize, double widthSize) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
+        child: Container(
+          height: heightSize,
+          width: widthSize,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          child: Container(
+            margin: EdgeInsets.only(top: heightSize * 0.1),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: heightSize * 0.8,
+                    width: widthSize * 0.8,
+                    padding: EdgeInsets.all(widthSize * 0.04),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(widthSize * 0.035),
+                    ),
+                    child: Consumer<ReportDay>(
+                      builder: (context, reportDay, _) => Column(
+                        children: [
+                          Expanded(
+                            child: Placeholder(),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: Placeholder(),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Placeholder(),
+                                ),
+                                SizedBox(
+                                  width: widthSize * 0.04,
+                                ),
+                                Expanded(
+                                  child: FlatButton(
+                                    color: mainColor,
+                                    onPressed: () {
+                                      reportDay.isReport = false;
+                                    },
+                                    child: Text("Cancel"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       );

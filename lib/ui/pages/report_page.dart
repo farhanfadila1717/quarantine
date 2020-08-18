@@ -13,22 +13,9 @@ class _ReportPageState extends State<ReportPage> {
 
   DateTime time = DateTime.now();
 
-  double valueGejala;
-  double batuk;
-  double sesakNapas;
-  double tidur;
-  double suhu;
-  bool isReport;
-
   @override
   void initState() {
     super.initState();
-    valueGejala = 0;
-    tidur = 0;
-    sesakNapas = 0;
-    suhu = 0;
-    batuk = 0;
-    isReport = false;
   }
 
   @override
@@ -39,6 +26,7 @@ class _ReportPageState extends State<ReportPage> {
       body: SafeArea(
         child: Stack(
           children: [
+            // NOTE: ALl Days Reports
             Positioned(
               top: heightSize * 0.38,
               left: widthSize * 0.04,
@@ -63,63 +51,163 @@ class _ReportPageState extends State<ReportPage> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Container(
-                              height: heightSize * 0.1,
-                              width: double.infinity,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: heightSize * 0.1,
-                                    width: heightSize * 0.1,
-                                    padding: EdgeInsets.all(heightSize * 0.02),
-                                    decoration: BoxDecoration(
-                                      color: mainColor.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Container(
-                                      height: double.infinity,
-                                      width: double.infinity,
+                            InkWell(
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: heightSize * 0.1,
+                                width: double.infinity,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: heightSize * 0.1,
+                                      width: heightSize * 0.1,
+                                      padding:
+                                          EdgeInsets.all(heightSize * 0.02),
                                       decoration: BoxDecoration(
-                                        color: mainColor,
-                                        shape: BoxShape.circle,
+                                        color: mainColor.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          "0",
-                                          style: whiteNumberFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                            fontWeight: FontWeight.w600,
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: mainColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "0",
+                                            style: whiteNumberFont.copyWith(
+                                              fontSize: heightSize * 0.02,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: widthSize * 0.04,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Hari 0",
-                                        style: blackTextFont.copyWith(
-                                          fontSize: heightSize * 0.022,
-                                          fontWeight: FontWeight.w600,
+                                    SizedBox(
+                                      width: widthSize * 0.04,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Hari 0",
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.022,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "Hari 0",
-                                        style: greyNumberFont.copyWith(
-                                          fontSize: heightSize * 0.02,
-                                          fontWeight: FontWeight.w400,
+                                        SizedBox(
+                                          height: heightSize * 0.01,
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                        Text(
+                                          time.dateAndTimeDay,
+                                          style: greyNumberFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: heightSize * 0.03,
+                                      color: greyColor,
+                                    ),
+                                    SizedBox(
+                                      width: widthSize * 0.04,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: heightSize * 0.02,
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: heightSize * 0.1,
+                                width: double.infinity,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: heightSize * 0.1,
+                                      width: heightSize * 0.1,
+                                      padding:
+                                          EdgeInsets.all(heightSize * 0.02),
+                                      decoration: BoxDecoration(
+                                        color: mainColor.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: mainColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "1",
+                                            style: whiteNumberFont.copyWith(
+                                              fontSize: heightSize * 0.02,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: widthSize * 0.04,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Hari 1",
+                                          style: blackTextFont.copyWith(
+                                            fontSize: heightSize * 0.022,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: heightSize * 0.01,
+                                        ),
+                                        Text(
+                                          time.dateAndTimeDay,
+                                          style: greyNumberFont.copyWith(
+                                            fontSize: heightSize * 0.02,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: heightSize * 0.03,
+                                      color: greyColor,
+                                    ),
+                                    SizedBox(
+                                      width: widthSize * 0.04,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

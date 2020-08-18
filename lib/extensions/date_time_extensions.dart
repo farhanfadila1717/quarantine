@@ -2,22 +2,24 @@ part of 'extensions.dart';
 
 extension DateTimeExtensions on DateTime {
   String get dateAndTime => "${this.day} ${this.monthName} ${this.year}";
+  String get dateAndTimeDay =>
+      "${this.getDayName}, ${this.day} ${this.monthName} ${this.year}";
   String get getDayName {
     switch (this.weekday) {
       case 1:
-        return 'Senin';
+        return 'Sen';
       case 2:
-        return 'Selasa';
+        return 'Sel';
       case 3:
-        return 'Rabu';
+        return 'Rab';
       case 4:
-        return 'Kamis';
+        return 'Kam';
       case 5:
-        return 'Jumat';
+        return 'Jum';
       case 6:
-        return 'Sabtu';
+        return 'Sab';
       default:
-        return 'Minggu';
+        return 'Ming';
     }
   }
 
