@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             height: heightSize * 0.23,
                             width: widthSize,
-                            child: SpinKitWave(
+                            child: SpinKitThreeBounce(
                               size: widthSize * 0.1,
                               color: mainColor,
                             ),
@@ -339,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                               width: widthSize,
                               height: heightSize * 0.35,
                               child: Center(
-                                child: SpinKitRotatingPlain(
+                                child: SpinKitThreeBounce(
                                   size: widthSize * 0.15,
                                   color: mainColor,
                                 ),
@@ -347,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                     ),
                     SizedBox(
-                      height: heightSize * 0.8,
+                      height: heightSize * 0.1,
                     ),
                   ],
                 ),

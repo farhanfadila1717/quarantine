@@ -337,7 +337,8 @@ class _ReportPageState extends State<ReportPage> {
                                                     height: heightSize * 0.005,
                                                   ),
                                                   Text(
-                                                    reportState.reports[0].batuk
+                                                    reportState
+                                                            .reports.last.batuk
                                                             .toInt()
                                                             .toString() +
                                                         " Kali",
@@ -398,7 +399,8 @@ class _ReportPageState extends State<ReportPage> {
                                                     height: heightSize * 0.005,
                                                   ),
                                                   Text(
-                                                    reportState.reports[0].tidur
+                                                    reportState
+                                                            .reports.last.tidur
                                                             .toString() +
                                                         " Jam",
                                                     style: whiteNumberFont
@@ -464,7 +466,7 @@ class _ReportPageState extends State<ReportPage> {
                                                     height: heightSize * 0.005,
                                                   ),
                                                   Text(
-                                                    reportState.reports[0]
+                                                    reportState.reports.last
                                                             .sesakNapas
                                                             .toInt()
                                                             .toString() +
@@ -525,7 +527,8 @@ class _ReportPageState extends State<ReportPage> {
                                                     height: heightSize * 0.005,
                                                   ),
                                                   Text(
-                                                    reportState.reports[0].suhu
+                                                    reportState
+                                                            .reports.last.suhu
                                                             .toString() +
                                                         "${String.fromCharCode(176)}",
                                                     style: whiteNumberFont

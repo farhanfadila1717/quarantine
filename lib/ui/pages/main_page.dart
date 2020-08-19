@@ -6,13 +6,65 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  Geolocator geolocator = Geolocator();
   int bottomNavbarIndex;
   PageController pageController;
+  int batuk;
+  int sesakNapas;
+  double tidur;
+  double suhuTubuh;
+  double valueGejala;
+  double _latitude;
+  double _longitude;
+  double _distanceMeters;
+  double _currentPositionLong;
+  double _currentPositionLat;
+  DateTime time = DateTime.now();
+  bool isSaveReport;
+
+  TextEditingController catatanController = TextEditingController();
   @override
   void initState() {
     super.initState();
+    geoLocation();
+    isSaveReport = false;
     bottomNavbarIndex = 0;
+    batuk = 0;
+    valueGejala = 0;
+    sesakNapas = 0;
+    tidur = 7;
+    suhuTubuh = 36.5;
+    catatanController.text = "";
     pageController = PageController(initialPage: bottomNavbarIndex);
+  }
+
+  geoLocation() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    geolocator
+        .getPositionStream(
+            LocationOptions(accuracy: LocationAccuracy.best, timeInterval: 100))
+        .listen((position) {
+      setState(() {
+        _currentPositionLat = position.latitude;
+        _currentPositionLong = position.longitude;
+        print(_currentPositionLat.toInt().toString());
+      });
+    });
+    try {
+      setState(() {
+        _latitude = position.latitude;
+        _longitude = position.longitude;
+      });
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    geoLocation();
+    super.dispose();
   }
 
   @override
@@ -65,33 +117,31 @@ class _MainPageState extends State<MainPage> {
                         timeNow.difference(startTime).inDays;
                     return BlocBuilder<ChartBloc, ChartState>(
                       builder: (_, chartState) =>
-                          // (differenceInDays >= chartState.bezierCharts.length &&
-                          //         bottomNavbarIndex == 1)
-                          //     ?
-                          Positioned(
-                        right: widthSize * 0.04,
-                        bottom: heightSize * 0.12,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            reportDay.isReport = true;
-                          },
-                          elevation: 0,
-                          highlightElevation: 0,
-                          backgroundColor: mainColor,
-                          child: Center(
-                            child: Container(
-                              height: heightSize * 0.0375,
-                              width: heightSize * 0.0375,
-                              child: SvgPicture.asset(
-                                'assets/icons/ic_edit_rounded.svg',
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      // : SizedBox()
-                      ,
+                          (differenceInDays >= chartState.bezierCharts.length &&
+                                  bottomNavbarIndex == 1)
+                              ? Positioned(
+                                  right: widthSize * 0.04,
+                                  bottom: heightSize * 0.12,
+                                  child: FloatingActionButton(
+                                    onPressed: () {
+                                      reportDay.isReport = true;
+                                    },
+                                    elevation: 0,
+                                    highlightElevation: 0,
+                                    backgroundColor: mainColor,
+                                    child: Center(
+                                      child: Container(
+                                        height: heightSize * 0.0375,
+                                        width: heightSize * 0.0375,
+                                        child: SvgPicture.asset(
+                                          'assets/icons/ic_edit_rounded.svg',
+                                          fit: BoxFit.fitHeight,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                     );
                   } else {
                     return SizedBox();
@@ -486,15 +536,20 @@ class _MainPageState extends State<MainPage> {
                       Positioned(
                         top: heightSize * 0.01,
                         right: widthSize * 0.02,
-                        child: Consumer<DrawerOpen>(
-                          builder: (context, drawerOpen, _) => GestureDetector(
-                            onTap: () {
-                              drawerOpen.isDrawer = !drawerOpen.isDrawer;
-                            },
-                            child: Icon(
-                              Icons.close,
-                              size: widthSize * 0.075,
-                              color: redColor,
+                        child: Consumer<ReportDay>(
+                          builder: (context, reportDay, _) =>
+                              Consumer<DrawerOpen>(
+                            builder: (context, drawerOpen, _) =>
+                                GestureDetector(
+                              onTap: () {
+                                drawerOpen.isDrawer = !drawerOpen.isDrawer;
+                                reportDay.isReport = false;
+                              },
+                              child: Icon(
+                                Icons.close,
+                                size: widthSize * 0.075,
+                                color: redColor,
+                              ),
                             ),
                           ),
                         ),
@@ -527,37 +582,749 @@ class _MainPageState extends State<MainPage> {
                   Container(
                     height: heightSize * 0.8,
                     width: widthSize * 0.8,
-                    padding: EdgeInsets.all(widthSize * 0.04),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(widthSize * 0.035),
                     ),
                     child: Consumer<ReportDay>(
-                      builder: (context, reportDay, _) => Column(
+                      builder: (context, reportDay, _) => Stack(
                         children: [
-                          Expanded(
-                            child: Placeholder(),
+                          Positioned(
+                            top: widthSize * 0.03,
+                            right: widthSize * 0.03,
+                            child: GestureDetector(
+                              onTap: () {
+                                reportDay.isReport = false;
+                                catatanController.text = "";
+                              },
+                              child: Icon(
+                                Icons.close,
+                                size: widthSize * 0.075,
+                                color: redColor,
+                              ),
+                            ),
                           ),
-                          Expanded(
-                            flex: 8,
-                            child: Placeholder(),
-                          ),
-                          Expanded(
-                            child: Row(
+                          Padding(
+                            padding: EdgeInsets.all(widthSize * 0.03),
+                            child: Column(
                               children: [
                                 Expanded(
-                                  child: Placeholder(),
+                                  child: Center(
+                                    child: Text(
+                                      "Laporan Harian",
+                                      style: blueTextFont.copyWith(
+                                        fontSize: heightSize * 0.025,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: widthSize * 0.04,
+                                  height: widthSize * 0.03,
                                 ),
                                 Expanded(
-                                  child: FlatButton(
-                                    color: mainColor,
-                                    onPressed: () {
-                                      reportDay.isReport = false;
-                                    },
-                                    child: Text("Cancel"),
+                                  flex: 8,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 6,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: Container(
+                                                        height: widthSize * 0.1,
+                                                        width: widthSize * 0.1,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons.grain,
+                                                            size: widthSize *
+                                                                0.08,
+                                                            color: blackColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "Batuk",
+                                                        style: blackTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        batuk++;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: widthSize * 0.08,
+                                                    width: widthSize * 0.1,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: greyColor,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        batuk.toString(),
+                                                        style: blackNumberFont
+                                                            .copyWith(
+                                                          fontSize: heightSize *
+                                                              0.022,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: batuk > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              batuk--;
+                                                            });
+                                                          }
+                                                        : () {},
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 6,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: Container(
+                                                        height: widthSize * 0.1,
+                                                        width: widthSize * 0.1,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons
+                                                                .airline_seat_flat_angled,
+                                                            size: widthSize *
+                                                                0.08,
+                                                            color: blackColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "Tidur",
+                                                        style: blackTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        tidur += 0.10;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: widthSize * 0.08,
+                                                    width: widthSize * 0.1,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: greyColor,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        tidur
+                                                            .toStringAsFixed(2),
+                                                        style: blackNumberFont
+                                                            .copyWith(
+                                                          fontSize: heightSize *
+                                                              0.022,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: tidur > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              tidur -= 0.10;
+                                                            });
+                                                          }
+                                                        : () {},
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 6,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: Container(
+                                                        height: widthSize * 0.1,
+                                                        width: widthSize * 0.1,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons.gesture,
+                                                            size: widthSize *
+                                                                0.08,
+                                                            color: blackColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "Sesak Napas",
+                                                        style: blackTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sesakNapas++;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: widthSize * 0.08,
+                                                    width: widthSize * 0.1,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: greyColor,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        sesakNapas.toString(),
+                                                        style: blackNumberFont
+                                                            .copyWith(
+                                                          fontSize: heightSize *
+                                                              0.022,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: sesakNapas > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              sesakNapas--;
+                                                            });
+                                                          }
+                                                        : () {},
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 6,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: Container(
+                                                        height: widthSize * 0.1,
+                                                        width: widthSize * 0.1,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons.ac_unit,
+                                                            size: widthSize *
+                                                                0.08,
+                                                            color: blackColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "Suhu Tubuh",
+                                                        style: blackTextFont
+                                                            .copyWith(
+                                                          fontSize:
+                                                              heightSize * 0.02,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        suhuTubuh += 0.1;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: widthSize * 0.08,
+                                                    width: widthSize * 0.1,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: greyColor,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        suhuTubuh
+                                                                .toStringAsFixed(
+                                                                    1) +
+                                                            "${String.fromCharCode(176)}",
+                                                        style: blackNumberFont
+                                                            .copyWith(
+                                                          fontSize: heightSize *
+                                                              0.022,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: suhuTubuh > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              suhuTubuh -= 0.1;
+                                                            });
+                                                          }
+                                                        : () {},
+                                                    child: Container(
+                                                      height: widthSize * 0.07,
+                                                      width: widthSize * 0.07,
+                                                      decoration: BoxDecoration(
+                                                        color: mainColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          height: double.infinity,
+                                          width: double.infinity,
+                                          padding:
+                                              EdgeInsets.all(widthSize * 0.03),
+                                          decoration: BoxDecoration(
+                                            color: greyColor.withOpacity(0.4),
+                                            borderRadius: BorderRadius.circular(
+                                                widthSize * 0.02),
+                                          ),
+                                          child: TextField(
+                                            controller: catatanController,
+                                            decoration: InputDecoration(
+                                              hintText: "Catatan",
+                                              border: InputBorder.none,
+                                              hintStyle:
+                                                  greyNumberFont.copyWith(
+                                                fontSize: heightSize * 0.022,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            maxLines: 6,
+                                            maxLength: 150,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: widthSize * 0.03,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    child: BlocBuilder<UserBloc, UserState>(
+                                      builder: (_, userState) => (userState
+                                              is Userloaded)
+                                          ? isSaveReport
+                                              ? FlatButton(
+                                                  color: mainColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            widthSize * 0.02),
+                                                  ),
+                                                  onPressed: () async {
+                                                    _distanceMeters = await Geolocator()
+                                                        .distanceBetween(
+                                                            _currentPositionLong,
+                                                            _currentPositionLat,
+                                                            _longitude,
+                                                            _latitude);
+                                                    setState(() {
+                                                      isSaveReport = true;
+                                                    });
+                                                    if (suhuTubuh <= 37.5 &&
+                                                        tidur <= 7) {
+                                                      valueGejala = ((batuk *
+                                                                  15) +
+                                                              (sesakNapas * 25))
+                                                          .toDouble();
+
+                                                      await ReportServices
+                                                          .saveReport(
+                                                        userState.user.id,
+                                                        Report(
+                                                            userState.user.name,
+                                                            _distanceMeters
+                                                                .toInt(),
+                                                            batuk.toDouble(),
+                                                            sesakNapas
+                                                                .toDouble(),
+                                                            double.parse(suhuTubuh
+                                                                .toStringAsFixed(
+                                                                    1)),
+                                                            double.parse(tidur
+                                                                .toStringAsFixed(
+                                                                    2)),
+                                                            valueGejala,
+                                                            catatanController
+                                                                .text,
+                                                            time.millisecondsSinceEpoch),
+                                                      );
+
+                                                      context
+                                                          .bloc<ReportBloc>()
+                                                          .add(GetReport(
+                                                              userState
+                                                                  .user.id));
+                                                      context
+                                                          .bloc<ChartBloc>()
+                                                          .add(GetBezierChart(
+                                                              userState
+                                                                  .user.id));
+
+                                                      reportDay.isReport =
+                                                          false;
+                                                      setState(() {
+                                                        isSaveReport = false;
+                                                      });
+                                                    } else {
+                                                      valueGejala = ((batuk *
+                                                                  15) +
+                                                              (sesakNapas *
+                                                                  25) +
+                                                              ((8 - tidur) *
+                                                                  20) +
+                                                              ((suhuTubuh -
+                                                                      37.5) *
+                                                                  20))
+                                                          .toDouble();
+                                                      await ReportServices
+                                                          .saveReport(
+                                                        userState.user.id,
+                                                        Report(
+                                                            userState.user.name,
+                                                            _distanceMeters
+                                                                .toInt(),
+                                                            batuk.toDouble(),
+                                                            sesakNapas
+                                                                .toDouble(),
+                                                            double.parse(suhuTubuh
+                                                                .toStringAsFixed(
+                                                                    1)),
+                                                            double.parse(tidur
+                                                                .toStringAsFixed(
+                                                                    2)),
+                                                            valueGejala,
+                                                            catatanController
+                                                                .text,
+                                                            time.millisecondsSinceEpoch),
+                                                      );
+                                                      context
+                                                          .bloc<ReportBloc>()
+                                                          .add(GetReport(
+                                                              userState
+                                                                  .user.id));
+                                                      context
+                                                          .bloc<ChartBloc>()
+                                                          .add(GetBezierChart(
+                                                              userState
+                                                                  .user.id));
+
+                                                      setState(() {
+                                                        isSaveReport = false;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    "Simpan",
+                                                    style:
+                                                        whiteTextFont.copyWith(
+                                                      fontSize:
+                                                          heightSize * 0.02,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                )
+                                              : SpinKitThreeBounce(
+                                                  size: widthSize * 0.1,
+                                                  color: mainColor,
+                                                )
+                                          : SpinKitThreeBounce(
+                                              size: widthSize * 0.1,
+                                              color: mainColor),
+                                    ),
                                   ),
                                 ),
                               ],
