@@ -31,3 +31,4 @@ part 'sign_up_page.dart';
 part 'get_location_page.dart';
 part 'confirm_account_page.dart';
 part 'get_profile_picture_page.dart';
+part 'report_detail_page.dart';

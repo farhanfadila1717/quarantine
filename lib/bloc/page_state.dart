@@ -23,8 +23,11 @@ class OnSignInPage extends PageState {
 }
 
 class OnMainPage extends PageState {
+  final int bottomNavBarIndex;
+
+  OnMainPage({this.bottomNavBarIndex = 0});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [bottomNavBarIndex];
 }
 
 class OnGetLocationPage extends PageState {
@@ -57,4 +60,12 @@ class OnGetProfilePicturePage extends PageState {
   OnGetProfilePicturePage(this.registrationData);
   @override
   List<Object> get props => [registrationData];
+}
+
+class OnReportDetailPage extends PageState {
+  final Report report;
+
+  OnReportDetailPage(this.report);
+  @override
+  List<Object> get props => [report];
 }

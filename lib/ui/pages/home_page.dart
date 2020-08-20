@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                               height: heightSize * 0.35,
                               child: Center(
                                 child: SpinKitThreeBounce(
-                                  size: widthSize * 0.15,
+                                  size: widthSize * 0.05,
                                   color: mainColor,
                                 ),
                               ),

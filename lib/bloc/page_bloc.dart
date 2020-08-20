@@ -19,7 +19,7 @@ class PageBloc extends Bloc<PageEvent, PageState> {
     } else if (event is GoToSignInPage) {
       yield OnSignInPage();
     } else if (event is GoToMainPage) {
-      yield OnMainPage();
+      yield OnMainPage(bottomNavBarIndex: event.bottomNavBarIndex);
     } else if (event is GoToGetLocationPage) {
       yield OnGetLocationPage(event.registrationData);
     } else if (event is GoToSignUpPage) {
@@ -28,6 +28,8 @@ class PageBloc extends Bloc<PageEvent, PageState> {
       yield OnConfrimAccountPage(event.registrationData);
     } else if (event is GoToGetProfilePicturePage) {
       yield OnGetProfilePicturePage(event.registrationData);
+    } else if (event is GoToReportDetailPage) {
+      yield OnReportDetailPage(event.report);
     }
   }
 }

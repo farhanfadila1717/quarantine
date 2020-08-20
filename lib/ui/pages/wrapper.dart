@@ -35,7 +35,13 @@ class Wrapper extends StatelessWidget {
                           : (pageState is OnGetProfilePicturePage)
                               ? GetProfilePicturePage(
                                   pageState.registrationData)
-                              : MainPage(),
+                              : (pageState is OnReportDetailPage)
+                                  ? ReportDetailPage(pageState.report)
+                                  : (pageState is OnMainPage)
+                                      ? MainPage(
+                                          bottomNavbarIndex:
+                                              pageState.bottomNavBarIndex)
+                                      : Container(),
     );
   }
 }

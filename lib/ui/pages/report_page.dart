@@ -6,11 +6,6 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-  TextEditingController batukController = TextEditingController();
-  TextEditingController sesakNapasController = TextEditingController();
-  TextEditingController tidurController = TextEditingController();
-  TextEditingController suhuController = TextEditingController();
-
   DateTime time = DateTime.now();
 
   @override
@@ -48,168 +43,27 @@ class _ReportPageState extends State<ReportPage> {
                     ),
                     Expanded(
                       flex: 15,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                height: heightSize * 0.1,
-                                width: double.infinity,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: heightSize * 0.1,
-                                      width: heightSize * 0.1,
-                                      padding:
-                                          EdgeInsets.all(heightSize * 0.02),
-                                      decoration: BoxDecoration(
-                                        color: mainColor.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: mainColor,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "0",
-                                            style: whiteNumberFont.copyWith(
-                                              fontSize: heightSize * 0.02,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: widthSize * 0.04,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Hari 0",
-                                          style: blackTextFont.copyWith(
-                                            fontSize: heightSize * 0.022,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: heightSize * 0.01,
-                                        ),
-                                        Text(
-                                          time.dateAndTimeDay,
-                                          style: greyNumberFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: heightSize * 0.03,
-                                      color: greyColor,
-                                    ),
-                                    SizedBox(
-                                      width: widthSize * 0.04,
-                                    ),
-                                  ],
+                      child: BlocBuilder<ReportBloc, ReportState>(
+                        builder: (_, reportState) => ListView.builder(
+                            itemCount: reportState.reports.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(
+                                    top: index == 0 ? 0 : heightSize * 0.025),
+                                child: ReportCard(
+                                  heightSize: heightSize,
+                                  widthSize: widthSize,
+                                  report: reportState.reports[index],
+                                  index: index,
+                                  onTap: () {
+                                    context.bloc<PageBloc>().add(
+                                        GoToReportDetailPage(
+                                            reportState.reports[index]));
+                                  },
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: heightSize * 0.02,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                height: heightSize * 0.1,
-                                width: double.infinity,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: heightSize * 0.1,
-                                      width: heightSize * 0.1,
-                                      padding:
-                                          EdgeInsets.all(heightSize * 0.02),
-                                      decoration: BoxDecoration(
-                                        color: mainColor.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: mainColor,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "1",
-                                            style: whiteNumberFont.copyWith(
-                                              fontSize: heightSize * 0.02,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: widthSize * 0.04,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Hari 1",
-                                          style: blackTextFont.copyWith(
-                                            fontSize: heightSize * 0.022,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: heightSize * 0.01,
-                                        ),
-                                        Text(
-                                          time.dateAndTimeDay,
-                                          style: greyNumberFont.copyWith(
-                                            fontSize: heightSize * 0.02,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: heightSize * 0.03,
-                                      color: greyColor,
-                                    ),
-                                    SizedBox(
-                                      width: widthSize * 0.04,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                              );
+                            }),
                       ),
                     ),
                   ],

@@ -18,8 +18,11 @@ class GoToSignInPage extends PageEvent {
 }
 
 class GoToMainPage extends PageEvent {
+  final int bottomNavBarIndex;
+
+  GoToMainPage({this.bottomNavBarIndex = 0});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [bottomNavBarIndex];
 }
 
 class GoToGetLocationPage extends PageEvent {
@@ -52,4 +55,12 @@ class GoToGetProfilePicturePage extends PageEvent {
   GoToGetProfilePicturePage(this.registrationData);
   @override
   List<Object> get props => [registrationData];
+}
+
+class GoToReportDetailPage extends PageEvent {
+  final Report report;
+
+  GoToReportDetailPage(this.report);
+  @override
+  List<Object> get props => [report];
 }

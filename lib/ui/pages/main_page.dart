@@ -1,6 +1,9 @@
 part of 'pages.dart';
 
 class MainPage extends StatefulWidget {
+  final int bottomNavbarIndex;
+
+  MainPage({this.bottomNavbarIndex = 0});
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -26,9 +29,9 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    geoLocation();
+    bottomNavbarIndex == 1 ? geoLocation() : stop();
     isSaveReport = false;
-    bottomNavbarIndex = 0;
+    bottomNavbarIndex = widget.bottomNavbarIndex;
     batuk = 0;
     valueGejala = 0;
     sesakNapas = 0;
@@ -38,6 +41,7 @@ class _MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: bottomNavbarIndex);
   }
 
+  stop() {}
   geoLocation() async {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
@@ -48,7 +52,6 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         _currentPositionLat = position.latitude;
         _currentPositionLong = position.longitude;
-        print(_currentPositionLat.toInt().toString());
       });
     });
     try {
@@ -59,12 +62,6 @@ class _MainPageState extends State<MainPage> {
     } on PlatformException catch (e) {
       print(e.toString());
     }
-  }
-
-  @override
-  void dispose() {
-    geoLocation();
-    super.dispose();
   }
 
   @override
@@ -1196,7 +1193,11 @@ class _MainPageState extends State<MainPage> {
                                       builder: (_, userState) => (userState
                                               is Userloaded)
                                           ? isSaveReport
-                                              ? FlatButton(
+                                              ? SpinKitThreeBounce(
+                                                  size: widthSize * 0.1,
+                                                  color: redColor,
+                                                )
+                                              : FlatButton(
                                                   color: mainColor,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -1300,6 +1301,8 @@ class _MainPageState extends State<MainPage> {
                                                           .add(GetBezierChart(
                                                               userState
                                                                   .user.id));
+                                                      reportDay.isReport =
+                                                          false;
 
                                                       setState(() {
                                                         isSaveReport = false;
@@ -1316,10 +1319,6 @@ class _MainPageState extends State<MainPage> {
                                                           FontWeight.w600,
                                                     ),
                                                   ),
-                                                )
-                                              : SpinKitThreeBounce(
-                                                  size: widthSize * 0.1,
-                                                  color: mainColor,
                                                 )
                                           : SpinKitThreeBounce(
                                               size: widthSize * 0.1,
