@@ -21,7 +21,20 @@ class SplashPage extends StatelessWidget {
                   width: widthSize,
                   margin: EdgeInsets.only(
                       top: heightSize * 0.08, bottom: heightSize * 0.05),
-                  color: mainColor,
+                  child: Center(
+                    child: Container(
+                      height: widthSize * 0.35,
+                      width: widthSize * 0.35,
+                      padding: EdgeInsets.all(widthSize * 0.05),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(widthSize * 0.02),
+                      ),
+                      child: SvgPicture.asset(
+                          'assets/icons/quarantine_logo.svg',
+                          fit: BoxFit.fitHeight),
+                    ),
+                  ),
                 ),
                 Text(
                   "Selamat Datang",
@@ -45,10 +58,10 @@ class SplashPage extends StatelessWidget {
                   height: heightSize * 0.1,
                 ),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    height: heightSize * 0.07,
-                    width: widthSize * 0.7,
+                    height: heightSize * 0.075,
+                    width: widthSize - (2 * widthSize * 0.04),
                     child: FlatButton(
                       color: mainColor,
                       onPressed: () {

@@ -300,7 +300,11 @@ class _SignInPageState extends State<SignInPage> {
                               width: 4,
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context
+                                    .bloc<PageBloc>()
+                                    .add(GoToSignUpPage(RegistrationData()));
+                              },
                               child: Text(
                                 "Daftar",
                                 style: blueTextFont.copyWith(
