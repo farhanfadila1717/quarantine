@@ -12,7 +12,7 @@ class ActivityCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(widthSize * 0.03),
       child: Container(
-        height: heightSize * 0.11,
+        height: heightSize * 0.1,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -20,8 +20,8 @@ class ActivityCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: heightSize * 0.11,
-              width: heightSize * 0.11,
+              height: heightSize * 0.1,
+              width: heightSize * 0.1,
               padding: EdgeInsets.all(heightSize * 0.02),
               decoration: BoxDecoration(
                 color: mainColor.withOpacity(0.5),

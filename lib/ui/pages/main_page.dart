@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    bottomNavbarIndex == 1 ? geoLocation() : stop();
+    geoLocation();
     isSaveReport = false;
     bottomNavbarIndex = widget.bottomNavbarIndex;
     batuk = 0;
@@ -41,7 +41,6 @@ class _MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: bottomNavbarIndex);
   }
 
-  stop() {}
   geoLocation() async {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
@@ -52,6 +51,7 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         _currentPositionLat = position.latitude;
         _currentPositionLong = position.longitude;
+        print(_currentPositionLat);
       });
     });
     try {
@@ -676,11 +676,13 @@ class _MainPageState extends State<MainPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        batuk++;
-                                                      });
-                                                    },
+                                                    onTap: batuk > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              batuk--;
+                                                            });
+                                                          }
+                                                        : () {},
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -689,10 +691,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          size:
-                                                              widthSize * 0.05,
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -723,13 +725,11 @@ class _MainPageState extends State<MainPage> {
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: batuk > 0
-                                                        ? () {
-                                                            setState(() {
-                                                              batuk--;
-                                                            });
-                                                          }
-                                                        : () {},
+                                                    onTap: () {
+                                                      setState(() {
+                                                        batuk++;
+                                                      });
+                                                    },
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -738,10 +738,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Container(
-                                                          height: 2,
-                                                          width:
-                                                              widthSize * 0.027,
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -807,11 +807,13 @@ class _MainPageState extends State<MainPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        tidur += 0.10;
-                                                      });
-                                                    },
+                                                    onTap: tidur > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              tidur -= 0.10;
+                                                            });
+                                                          }
+                                                        : () {},
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -820,10 +822,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          size:
-                                                              widthSize * 0.05,
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -855,13 +857,11 @@ class _MainPageState extends State<MainPage> {
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: tidur > 0
-                                                        ? () {
-                                                            setState(() {
-                                                              tidur -= 0.10;
-                                                            });
-                                                          }
-                                                        : () {},
+                                                    onTap: () {
+                                                      setState(() {
+                                                        tidur += 0.10;
+                                                      });
+                                                    },
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -870,10 +870,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Container(
-                                                          height: 2,
-                                                          width:
-                                                              widthSize * 0.027,
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -941,11 +941,13 @@ class _MainPageState extends State<MainPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        sesakNapas++;
-                                                      });
-                                                    },
+                                                    onTap: sesakNapas > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              sesakNapas--;
+                                                            });
+                                                          }
+                                                        : () {},
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -954,10 +956,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          size:
-                                                              widthSize * 0.05,
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -988,13 +990,11 @@ class _MainPageState extends State<MainPage> {
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: sesakNapas > 0
-                                                        ? () {
-                                                            setState(() {
-                                                              sesakNapas--;
-                                                            });
-                                                          }
-                                                        : () {},
+                                                    onTap: () {
+                                                      setState(() {
+                                                        sesakNapas++;
+                                                      });
+                                                    },
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -1003,10 +1003,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Container(
-                                                          height: 2,
-                                                          width:
-                                                              widthSize * 0.027,
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -1071,11 +1071,13 @@ class _MainPageState extends State<MainPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        suhuTubuh += 0.1;
-                                                      });
-                                                    },
+                                                    onTap: suhuTubuh > 0
+                                                        ? () {
+                                                            setState(() {
+                                                              suhuTubuh -= 0.1;
+                                                            });
+                                                          }
+                                                        : () {},
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -1084,10 +1086,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          size:
-                                                              widthSize * 0.05,
+                                                        child: Container(
+                                                          height: 2,
+                                                          width:
+                                                              widthSize * 0.027,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -1121,13 +1123,11 @@ class _MainPageState extends State<MainPage> {
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: suhuTubuh > 0
-                                                        ? () {
-                                                            setState(() {
-                                                              suhuTubuh -= 0.1;
-                                                            });
-                                                          }
-                                                        : () {},
+                                                    onTap: () {
+                                                      setState(() {
+                                                        suhuTubuh += 0.1;
+                                                      });
+                                                    },
                                                     child: Container(
                                                       height: widthSize * 0.07,
                                                       width: widthSize * 0.07,
@@ -1136,10 +1136,10 @@ class _MainPageState extends State<MainPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Center(
-                                                        child: Container(
-                                                          height: 2,
-                                                          width:
-                                                              widthSize * 0.027,
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              widthSize * 0.05,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -1195,7 +1195,7 @@ class _MainPageState extends State<MainPage> {
                                           ? isSaveReport
                                               ? SpinKitThreeBounce(
                                                   size: widthSize * 0.1,
-                                                  color: redColor,
+                                                  color: mainColor,
                                                 )
                                               : FlatButton(
                                                   color: mainColor,
