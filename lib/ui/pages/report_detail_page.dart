@@ -484,7 +484,6 @@ class ReportDetailPage extends StatelessWidget {
                                                       children: [
                                                         Text(
                                                           report.suhu
-                                                                  .toInt()
                                                                   .toString() +
                                                               "${String.fromCharCode(176)}",
                                                           style: whiteNumberFont

@@ -243,7 +243,7 @@ class _MainPageState extends State<MainPage> {
               ),
               BottomNavigationBarItem(
                 title: Text(
-                  "Aktifitas",
+                  "Aktivitas",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -1237,7 +1237,9 @@ class _MainPageState extends State<MainPage> {
                                                             double.parse(tidur
                                                                 .toStringAsFixed(
                                                                     2)),
-                                                            valueGejala,
+                                                            double.parse(valueGejala
+                                                                .toStringAsFixed(
+                                                                    2)),
                                                             catatanController
                                                                 .text,
                                                             time.millisecondsSinceEpoch),
@@ -1286,7 +1288,9 @@ class _MainPageState extends State<MainPage> {
                                                             double.parse(tidur
                                                                 .toStringAsFixed(
                                                                     2)),
-                                                            valueGejala,
+                                                            double.parse(valueGejala
+                                                                .toStringAsFixed(
+                                                                    2)),
                                                             catatanController
                                                                 .text,
                                                             time.millisecondsSinceEpoch),

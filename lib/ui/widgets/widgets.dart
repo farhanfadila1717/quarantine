@@ -14,3 +14,4 @@ part 'saran_card.dart';
 part 'bezier_chart.dart';
 part 'custom_app_bar.dart';
 part 'report_card.dart';
+part 'activity_card.dart';

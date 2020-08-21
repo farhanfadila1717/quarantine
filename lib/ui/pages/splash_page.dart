@@ -61,7 +61,7 @@ class SplashPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
                     height: heightSize * 0.075,
-                    width: widthSize - (2 * widthSize * 0.04),
+                    width: widthSize - (2 * widthSize * 0.07),
                     child: FlatButton(
                       color: mainColor,
                       onPressed: () {

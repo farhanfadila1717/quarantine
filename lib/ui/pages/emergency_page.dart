@@ -15,12 +15,53 @@ class EmergencyPage extends StatelessWidget {
                 widthSize: widthSize,
                 title: "Kontak Darurat",
               ),
-              Container(
-                height: heightSize * 0.12,
-                width: widthSize - 2 * (widthSize * 0.04),
-                decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.circular(widthSize * 0.04),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(widthSize * 0.04),
+                child: Container(
+                  height: heightSize * 0.12,
+                  width: widthSize - 2 * (widthSize * 0.04),
+                  decoration: BoxDecoration(
+                    color: mainColor,
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: -heightSize * 0.01,
+                        left: -heightSize * 0.01,
+                        child: Container(
+                          height: heightSize * 0.08,
+                          width: heightSize * 0.08,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "i",
+                              style: blueTextFont.copyWith(
+                                fontSize: heightSize * 0.03,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthSize * 0.04),
+                          child: Text(
+                            "Jangan ragu untuk menghubungi\n nomor darurat!",
+                            style: whiteTextFont.copyWith(
+                              fontSize: heightSize * 0.02,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -396,7 +437,7 @@ class EmergencyPage extends StatelessWidget {
                                                     height: widthSize * 0.07,
                                                     width: widthSize * 0.07,
                                                     child: SvgPicture.asset(
-                                                      'assets/icons/ic_virus.svg',
+                                                      'assets/icons/ic_family.svg',
                                                       color: Colors.white,
                                                     ),
                                                   ),
