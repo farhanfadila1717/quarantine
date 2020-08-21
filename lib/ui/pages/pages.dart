@@ -18,6 +18,7 @@ import 'package:quarantine/shared/shared.dart';
 import 'package:quarantine/provider/providers.dart';
 import 'package:quarantine/ui/widgets/widgets.dart';
 import 'package:quarantine/extensions/extensions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'splash_page.dart';
 part 'main_page.dart';
