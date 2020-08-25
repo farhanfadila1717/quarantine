@@ -21,28 +21,19 @@ class EmergencyPage extends StatelessWidget {
                   height: heightSize * 0.12,
                   width: widthSize - 2 * (widthSize * 0.04),
                   decoration: BoxDecoration(
-                    color: mainColor,
+                    color: Color(0xFF56AAF6),
                   ),
                   child: Stack(
                     children: [
                       Positioned(
-                        top: -heightSize * 0.01,
-                        left: -heightSize * 0.01,
+                        bottom: -heightSize * 0.01,
+                        right: -heightSize * 0.01,
                         child: Container(
-                          height: heightSize * 0.08,
-                          width: heightSize * 0.08,
+                          height: heightSize * 0.09,
+                          width: heightSize * 0.09,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: mainColor,
                             shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "i",
-                              style: blueTextFont.copyWith(
-                                fontSize: heightSize * 0.03,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                           ),
                         ),
                       ),
@@ -51,12 +42,41 @@ class EmergencyPage extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: widthSize * 0.04),
-                          child: Text(
-                            "Jangan ragu untuk menghubungi\n nomor darurat!",
-                            style: whiteTextFont.copyWith(
-                              fontSize: heightSize * 0.02,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: heightSize * 0.06,
+                                width: heightSize * 0.06,
+                                decoration: BoxDecoration(
+                                  color: mainColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Container(
+                                    height: widthSize * 0.07,
+                                    width: widthSize * 0.07,
+                                    child: Icon(
+                                      Icons.favorite,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: widthSize * 0.02,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  "Jangan ragu untuk menghubungi nomor darurat!",
+                                  style: whiteTextFont.copyWith(
+                                    fontSize: heightSize * 0.02,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -87,7 +107,7 @@ class EmergencyPage extends StatelessWidget {
                                 height: double.infinity,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: greenColor,
+                                  color: mainColor,
                                 ),
                                 child: Column(
                                   children: [
@@ -189,7 +209,7 @@ class EmergencyPage extends StatelessWidget {
                                 height: double.infinity,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: Colors.deepPurple[600],
+                                  color: Color(0xFF4f8a8b),
                                 ),
                                 child: Column(
                                   children: [
@@ -399,7 +419,7 @@ class EmergencyPage extends StatelessWidget {
                                 height: double.infinity,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: Colors.blue[500],
+                                  color: Color(0xFF52575d),
                                 ),
                                 child: Column(
                                   children: [
